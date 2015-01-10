@@ -16,8 +16,8 @@ module.exports = (robot) ->
     .get() (err, res, body) ->
       response = JSON.parse(body)
       for result, i in response.list
-        str = "Definition for '" + result.word + "'\n"
-        str += result.definition + "\n"
-        str += "_\"" + result.example + "\"_\n"
+        str = "*" + result.word + "*\n"
+        str += result.definition + "\n\n"
+        str += "_" + result.example + "_\n\n"
         str += "Related: " + response.tags.join(", ")
         return msg.send str
