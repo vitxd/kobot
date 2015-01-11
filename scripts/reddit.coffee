@@ -2,7 +2,7 @@
 #   Reddit me
 #
 # Commands:
-#   hubot /r/<subreddit> me - Defines a word/phrase
+#   hubot /r/<subreddit> me - Picks a random post from subreddit
 #
 #
 # Author:
