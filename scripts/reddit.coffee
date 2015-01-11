@@ -2,7 +2,7 @@
 #   Reddit me
 #
 # Commands:
-#   hubot /r/<subreddit> me - Picks a random post from subreddit
+#   hubot /r/<subreddit> - Picks a random post from subreddit
 #
 #
 # Author:
@@ -10,7 +10,7 @@
 
 module.exports = (robot) ->
 
-  robot.respond /\/r\/(.+) me/i, (msg) ->
+  robot.respond /\/r\/(.+)/i, (msg) ->
     subreddit = msg.match[1]
     msg.http("http://www.reddit.com/r/"+subreddit+"/hot.json")
     .get() (err, res, body) ->
