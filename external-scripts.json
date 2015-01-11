@@ -27,6 +27,5 @@
   "hubot-http-status",
   "hubot-tweets",
   "hubot-dogeme",
-  "hubot-newrelic",
   "hubot-newrelic2"
 ]
