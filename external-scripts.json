@@ -26,5 +26,6 @@
   "hubot-devops-reactions",
   "hubot-http-status",
   "hubot-tweets",
-  "hubot-dogeme"
+  "hubot-dogeme",
+  "hubot-newrelic"
 ]
