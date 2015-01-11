@@ -17,7 +17,8 @@ module.exports = (robot) ->
       response = JSON.parse(body)
       for result, i in response.list
         str = "*" + result.word + "*\n"
-        str += result.definition + "\n\n"
-        str += "_" + result.example + "_\n\n"
+        str += ">" + result.definition.replace(/(?:\r\n|\r|\n)/g, "\n>") + "\n\n"
+        str += "\n>_" + result.example.replace(/(?:\r\n|\r|\n)/g, "_\n>_") + " _\n\n"
         str += "Related: " + response.tags.join(", ")
+        str = str.replace(/__/g, "")
         return msg.send str
