@@ -15,7 +15,7 @@ Util = require "util"
 module.exports = (robot) ->
 
   robot.respond /debug message/i, (msg) ->
-    return msg.send Util.inspect(msg.message)
+    return msg.send "```" + Util.inspect(msg.message) + "```"
 
   robot.respond /debug brain/i, (msg) ->
-    return msg.send Util.inspect(robot.brain.data)
+    return msg.send "```" + Util.inspect(robot.brain.data) + "```"
