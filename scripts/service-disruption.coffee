@@ -1,5 +1,5 @@
 # Description:
-#   Urban dictionary
+#   Service disruption
 #
 # Commands:
 #   hubot tube status - Defines a word/phrase
