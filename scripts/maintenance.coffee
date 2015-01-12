@@ -29,7 +29,8 @@ module.exports = (robot) ->
       output += '```' + data + '```'
     )
     gitUpdate.on('close', (code) ->
-      sleep(1000)
+      output += "\n"
+      sleep(2000)
       if (code == 0)
         msg.send output + "Success, now running `" + npmPath + " install`"
         output = ""
@@ -41,12 +42,12 @@ module.exports = (robot) ->
           output += '```' + data + '```'
         )
         npmInstall.on('close', (code) ->
-          sleep(1000)
+          sleep(2000)
           if (code == 0)
             robot.brain.data.reloadRoom = msg.message.room
             output += "NPM Install success, "
             msg.send output + "Shutting down"
-            sleep(1000)
+            sleep(2000)
             msg.robot.shutdown()
           else
             msg.send output + "NPM exit code " + code
