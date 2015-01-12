@@ -14,7 +14,6 @@ gitPath = process.env.HUBOT_GIT_PATH
 npmPath = process.env.HUBOT_NPM_PATH
 
 module.exports = (robot) ->
-
   robot.respond /self-update/i, (msg) ->
     msg.send "Running `" + gitPath + " pull`"
     gitUpdate = spawn gitPath, ['pull']
@@ -49,5 +48,5 @@ module.exports = (robot) ->
 
   robot.on 'loaded', =>
     if (robot.brain.data.reloadRoom)
-        robot.messageRoom robot.brain.data.reloadRoom, "Back online"
+      robot.messageRoom robot.brain.data.reloadRoom, "Back online"
     robot.brain.data.reloadRoom = null
