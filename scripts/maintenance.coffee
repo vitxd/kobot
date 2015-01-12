@@ -19,8 +19,8 @@ sleep = (ms) ->
 
 module.exports = (robot) ->
   robot.respond /self-update/i, (msg) ->
-    msg.send "Running `" + gitPath + " pull`"
-    gitUpdate = spawn gitPath, ['pull']
+    msg.send "Running `" + npmPath + " pull`"
+    gitUpdate = spawn npmPath, ['install']
     output = ""
     gitUpdate.stdout.on('data', (data) ->
       output += data + "\n"
@@ -30,7 +30,7 @@ module.exports = (robot) ->
     )
     gitUpdate.on('close', (code) ->
       output = "```" + output + "```\n"
-      sleep(2000)
+#      sleep(2000)
       if (code == 0)
         msg.send output + "Success, now running `" + npmPath + " install`"
         output = ""
@@ -42,13 +42,13 @@ module.exports = (robot) ->
           output += data + "\n"
         )
         npmInstall.on('close', (npmCode) ->
-          sleep(2000)
+#          sleep(2000)
           output = "```" + output + "```\n"
           if (npmCode == 0)
             robot.brain.data.reloadRoom = msg.message.room
             output += "Success, restarting..."
             msg.send output
-            sleep(2000)
+#            sleep(2000)
             msg.robot.shutdown()
           else
             msg.send output + "NPM exit code " + npmCode
