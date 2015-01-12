@@ -32,7 +32,7 @@ module.exports = (robot) ->
         msg.send "NEIN, NEIN, NEIN, NEIN, NEIN!"
 
 
-  robot.respond /is the (.*)line? fucked\?/i, (msg) ->
+  robot.respond /is the (.*)(line)? fucked\?/i, (msg) ->
     console.log msg.match
     query = msg.match[1].trim().replace(/\s+/g, '-').toLowerCase()
     console.log query
