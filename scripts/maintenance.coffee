@@ -42,7 +42,7 @@ module.exports = (robot) ->
           if (npmCode == 0)
             output += "Success, restarting..."
             msg.send output
-            robot.brain.set('reloadRoom', msg.message.room)
+            robot.brain.set('reloadRoom', msg.message.user.room)
             msg.robot.shutdown()
           else
             msg.send output + "NPM exit code " + npmCode
