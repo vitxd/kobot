@@ -13,14 +13,10 @@ spawn = require('child_process').spawn
 gitPath = process.env.HUBOT_GIT_PATH
 npmPath = process.env.HUBOT_NPM_PATH
 
-sleep = (ms) ->
-  start = new Date().getTime()
-  continue while new Date().getTime() - start < ms
-
 module.exports = (robot) ->
   robot.respond /self-update/i, (msg) ->
-    msg.send "Running `" + npmPath + " pull`"
-    gitUpdate = spawn npmPath, ['install']
+    msg.send "Running `" + gitPath + " pull`"
+    gitUpdate = spawn gitPath, ['pull']
     output = ""
     gitUpdate.stdout.on('data', (data) ->
       output += data + "\n"
@@ -30,7 +26,6 @@ module.exports = (robot) ->
     )
     gitUpdate.on('close', (code) ->
       output = "```" + output + "```\n"
-#      sleep(2000)
       if (code == 0)
         msg.send output + "Success, now running `" + npmPath + " install`"
         output = ""
@@ -42,13 +37,12 @@ module.exports = (robot) ->
           output += data + "\n"
         )
         npmInstall.on('close', (npmCode) ->
-#          sleep(2000)
-          output = "```" + output + "```\n"
+          if (output.length)
+            output = "```" + output + "```\n"
           if (npmCode == 0)
-            robot.brain.data.reloadRoom = msg.message.room
             output += "Success, restarting..."
             msg.send output
-#            sleep(2000)
+            robot.brain.set('reloadRoom', msg.message.room)
             msg.robot.shutdown()
           else
             msg.send output + "NPM exit code " + npmCode
@@ -58,6 +52,6 @@ module.exports = (robot) ->
     );
 
   robot.on 'loaded', =>
-    if (robot.brain.data.reloadRoom)
-      robot.messageRoom robot.brain.data.reloadRoom, "Back online!"
-    robot.brain.data.reloadRoom = null
+    if (robot.brain.get('reloadRoom'))
+      robot.messageRoom robot.brain.get('reloadRoom'), "Back online!"
+    robot.brain.set('reloadRoom', 0)
