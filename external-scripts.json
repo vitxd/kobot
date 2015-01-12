@@ -12,7 +12,6 @@
   "hubot-seen",
   "hubot-mute",
   "hubot-humanity",
-  "hubot-standup-alarm",
   "hubot-plusplus",
   "hubot-explainshell",
   "hubot-thank-you",
@@ -26,5 +25,7 @@
   "hubot-http-status",
   "hubot-tweets",
   "hubot-dogeme",
-  "hubot-newrelic2"
+  "hubot-newrelic2",
+  "hubot-suggest",
+  "hubot-cron"
 ]
