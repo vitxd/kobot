@@ -16,7 +16,7 @@ npmPath = process.env.HUBOT_NPM_PATH
 module.exports = (robot) ->
 
   robot.respond /self-update/i, (msg) ->
-    msg.send "Running Git pull.."
+    msg.send "Running `" + gitPath + " pull`"
     gitUpdate = spawn gitPath, ['pull']
     gitUpdate.stdout.on('data', (data) ->
       msg.send '```' + data + '```'
@@ -26,7 +26,7 @@ module.exports = (robot) ->
     )
     gitUpdate.on('close', (code) ->
       if (code == 0)
-        msg.send "Git pull success, now running NPM install..."
+        msg.send "Success, now running `" + npmPath + " install`"
         npmInstall = spawn npmPath, ['install']
         npmInstall.stdout.on('data', (data) ->
           msg.send '```' + data + '```'
