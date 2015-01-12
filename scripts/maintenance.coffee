@@ -15,8 +15,9 @@ npmPath = process.env.HUBOT_NPM_PATH
 
 module.exports = (robot) ->
   robot.respond /self-update/i, (msg) ->
-    msg.send "Running `" + gitPath + " pull`"
-    gitUpdate = spawn gitPath, ['pull']
+    cmd = gitPath + " pull && " + npmPath + " install"
+    msg.send "Running `"+cmd+"`"
+    gitUpdate = spawn '/bin/bash', ['-c',  cmd]
     output = ""
     gitUpdate.stdout.on('data', (data) ->
       output += data + "\n"
@@ -27,28 +28,12 @@ module.exports = (robot) ->
     gitUpdate.on('close', (code) ->
       output = "```" + output + "```\n"
       if (code == 0)
-        msg.send output + "Success, now running `" + npmPath + " install`"
-        output = ""
-        npmInstall = spawn npmPath, ['install']
-        npmInstall.stdout.on('data', (data) ->
-          output += data + "\n"
-        )
-        npmInstall.stderr.on('data', (data) ->
-          output += data + "\n"
-        )
-        npmInstall.on('close', (npmCode) ->
-          if (output.length)
-            output = "```" + output + "```\n"
-          if (npmCode == 0)
-            output += "Success, restarting..."
-            msg.send output
-            robot.brain.set('reloadRoom', msg.message.user.room)
-            msg.robot.shutdown()
-          else
-            msg.send output + "NPM exit code " + npmCode
-        )
+        output += "Success, restarting..."
+        msg.send output
+        robot.brain.set('reloadRoom', msg.message.user.room)
+        msg.robot.shutdown()
       else
-        msg.send output + "Git exit code " + code
+        msg.send output + "Fail: Exit code " + code
     );
 
   robot.on 'loaded', =>
