@@ -23,34 +23,35 @@ module.exports = (robot) ->
     gitUpdate = spawn gitPath, ['pull']
     output = ""
     gitUpdate.stdout.on('data', (data) ->
-      output += '```' + data + '```'
+      output += data + "\n"
     )
     gitUpdate.stderr.on('data', (data) ->
-      output += '```' + data + '```'
+      output += data + "\n"
     )
     gitUpdate.on('close', (code) ->
-      output += "\n"
+      output = "```" + output + "```\n"
       sleep(2000)
       if (code == 0)
         msg.send output + "Success, now running `" + npmPath + " install`"
         output = ""
         npmInstall = spawn npmPath, ['install']
         npmInstall.stdout.on('data', (data) ->
-          output += '```' + data + '```'
+          output += data + "\n"
         )
         npmInstall.stderr.on('data', (data) ->
-          output += '```' + data + '```'
+          output += data + "\n"
         )
-        npmInstall.on('close', (code) ->
+        npmInstall.on('close', (npmCode) ->
           sleep(2000)
-          if (code == 0)
+          output = "```" + output + "```\n"
+          if (npmCode == 0)
             robot.brain.data.reloadRoom = msg.message.room
-            output += "NPM Install success, "
-            msg.send output + "Shutting down"
+            output += "Success, restarting..."
+            msg.send output
             sleep(2000)
             msg.robot.shutdown()
           else
-            msg.send output + "NPM exit code " + code
+            msg.send output + "NPM exit code " + npmCode
         )
       else
         msg.send output + "Git exit code " + code
@@ -58,5 +59,5 @@ module.exports = (robot) ->
 
   robot.on 'loaded', =>
     if (robot.brain.data.reloadRoom)
-      robot.messageRoom robot.brain.data.reloadRoom, "Back online"
+      robot.messageRoom robot.brain.data.reloadRoom, "Back online!"
     robot.brain.data.reloadRoom = null
