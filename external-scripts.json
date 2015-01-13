@@ -27,5 +27,6 @@
   "hubot-dogeme",
   "hubot-newrelic2",
   "hubot-suggest",
-  "hubot-cron"
+  "hubot-cron",
+  "hubot-fliptable"
 ]
