@@ -5,6 +5,7 @@
 #   hubot update and restart - Fetch, install & reload
 #   hubot update git - Perform git pull
 #   hubot update npm - Perform npm install
+#   hubot show version - Show git revision
 #
 #
 # Author:
@@ -26,10 +27,10 @@ runCmd = (robot, room, cmd, args, next) ->
   robot.messageRoom(room, "Running `" + cmd + "`")
   output = ""
   child.stdout.on('data', (data) ->
-    output += data + "\n"
+    output += data
   )
   child.stderr.on('data', (data) ->
-    output += data + "\n"
+    output += data
   )
   child.on('close', (code) ->
     if (output.length)
@@ -49,13 +50,15 @@ updateGit = (robot, room, next) ->
 updateNpm = (robot, room, next) ->
   return runCmd(robot, room, npmPath, ["install"], next)
 
+getRevision = (robot, room, next) ->
+  return runCmd(robot, room, gitPath, ["log", "--oneline", "-n", "1"])
+
 respawnBot = (robot, room) ->
   robot.messageRoom room, "Restarting in 3 seconds..."
   robot.brain.set 'reloadRoom', room
   delay 3000, -> robot.shutdown()
 
 module.exports = (robot) ->
-
   robot.respond /update git/i, (msg) ->
     room = msg.message.user.room
     updateGit robot, room
@@ -71,6 +74,10 @@ module.exports = (robot) ->
         respawnBot(robot, room)
       )
     )
+
+  robot.respond /show version/i, (msg) ->
+    room = msg.message.user.room
+    getRevision(robot, room)
 
   robot.respond /respawn/i, (msg) ->
     room = msg.message.user.room
