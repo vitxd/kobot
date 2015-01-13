@@ -9,10 +9,9 @@
 #   h.deakin@quidco.com
 
 module.exports = (robot) ->
-
   robot.respond /[\/]?r\/(.+)/i, (msg) ->
     subreddit = msg.match[1]
-    msg.http("http://www.reddit.com/r/"+subreddit+"/hot.json")
+    msg.http("http://www.reddit.com/r/" + subreddit + "/hot.json")
     .get() (err, res, body) ->
       response = JSON.parse(body)
       children = response.data.children

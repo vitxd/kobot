@@ -4,7 +4,6 @@
 # Commands:
 #   hubot update and restart - Fetch, install & reload
 #   hubot update git - Perform git pull
-#   hubot update npm - Perform npm install
 #   hubot show version - Show git revision
 #
 #
@@ -14,7 +13,6 @@
 spawn = require('child_process').spawn
 
 gitPath = process.env.HUBOT_GIT_PATH
-npmPath = process.env.HUBOT_NPM_PATH
 
 delay = (ms, func) -> setTimeout func, ms
 
@@ -49,9 +47,6 @@ runCmd = (robot, room, cmd, args, next) ->
 updateGit = (robot, room, next) ->
   return runCmd(robot, room, gitPath, ["pull"], next)
 
-updateNpm = (robot, room, next) ->
-  return runCmd(robot, room, npmPath, ["install"], next)
-
 getRevision = (robot, room, next) ->
   return runCmd(robot, room, gitPath, ["log", "--oneline", "-n", "1"])
 
@@ -67,16 +62,10 @@ module.exports = (robot) ->
     room = msg.message.user.room
     updateGit robot, room
 
-  robot.respond /update npm/i, (msg) ->
-    room = msg.message.user.room
-    updateNpm robot, room
-
   robot.respond /update and restart/i, (msg) ->
     room = msg.message.user.room
     updateGit(robot, room, (robot, room, next) ->
-      updateNpm(robot, room, (robot, room, next) ->
-        respawnBot(robot, room)
-      )
+      respawnBot(robot, room)
     )
 
   robot.respond /show version/i, (msg) ->
