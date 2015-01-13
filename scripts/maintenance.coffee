@@ -56,7 +56,7 @@ getRevision = (robot, room, next) ->
   return runCmd(robot, room, gitPath, ["log", "--oneline", "-n", "1"])
 
 respawnBot = (robot, room) ->
-  robot.messageRoom room, "Restarting in 3 seconds..."
+  robot.messageRoom room, "Restarting..."
   isRestarting = true
   robot.brain.set "maintenanceReloadRoom", room
   robot.brain.save()
