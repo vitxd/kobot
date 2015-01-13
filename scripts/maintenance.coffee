@@ -2,7 +2,9 @@
 #   Maintenance scripts
 #
 # Commands:
-#   hubot self-update - Fetch, install & reload
+#   hubot update and restart - Fetch, install & reload
+#   hubot update git - Perform git pull
+#   hubot update npm - Perform npm install
 #
 #
 # Author:
@@ -13,30 +15,69 @@ spawn = require('child_process').spawn
 gitPath = process.env.HUBOT_GIT_PATH
 npmPath = process.env.HUBOT_NPM_PATH
 
-module.exports = (robot) ->
-  robot.respond /self-update/i, (msg) ->
-    cmd = gitPath + " pull && " + npmPath + " install"
-    msg.send "Running `"+cmd+"`"
-    gitUpdate = spawn '/bin/bash', ['-c',  cmd]
-    output = ""
-    gitUpdate.stdout.on('data', (data) ->
-      output += data + "\n"
-    )
-    gitUpdate.stderr.on('data', (data) ->
-      output += data + "\n"
-    )
-    gitUpdate.on('close', (code) ->
-      output = "```" + output + "```\n"
-      if (code == 0)
-        output += "Success, restarting..."
-        msg.send output
-        robot.brain.set('reloadRoom', msg.message.user.room)
-        msg.robot.shutdown()
-      else
-        msg.send output + "Fail: Exit code " + code
-    );
+delay = (ms, func) -> setTimeout func, ms
 
-  robot.on 'loaded', =>
-    if (robot.brain.get('reloadRoom'))
-      robot.messageRoom robot.brain.get('reloadRoom'), "Back online!"
-    robot.brain.set('reloadRoom', 0)
+sleep = (ms) ->
+  start = new Date().getTime()
+  continue while new Date().getTime() - start < ms
+
+runCmd = (robot, room, cmd, args, next) ->
+  child = spawn cmd, args
+  robot.messageRoom(room, "Running `" + cmd + "`")
+  output = ""
+  child.stdout.on('data', (data) ->
+    output += data + "\n"
+  )
+  child.stderr.on('data', (data) ->
+    output += data + "\n"
+  )
+  child.on('close', (code) ->
+    if (output.length)
+      robot.messageRoom(room, "```" + output + "```")
+    if (code != 0)
+      robot.messageRoom(room, "Fail (" + code + ")")
+    else
+      if next
+        next(robot, room, next)
+      else
+        robot.messageRoom(room, "Success")
+  )
+
+updateGit = (robot, room, next) ->
+  return runCmd(robot, room, gitPath, ["pull"], next)
+
+updateNpm = (robot, room, next) ->
+  return runCmd(robot, room, npmPath, ["install"], next)
+
+respawnBot = (robot, room) ->
+  robot.messageRoom room, "Restarting in 3 seconds..."
+  robot.brain.set 'reloadRoom', room
+  delay 3000, -> robot.shutdown()
+
+module.exports = (robot) ->
+
+  robot.respond /update git/i, (msg) ->
+    room = msg.message.user.room
+    updateGit robot, room
+
+  robot.respond /update npm/i, (msg) ->
+    room = msg.message.user.room
+    updateNpm robot, room
+
+  robot.respond /update and restart/i, (msg) ->
+    room = msg.message.user.room
+    updateGit(robot, room, (robot, room, next) ->
+      updateNpm(robot, room, (robot, room, next) ->
+        respawnBot(robot, room)
+      )
+    )
+
+  robot.respond /respawn/i, (msg) ->
+    room = msg.message.user.room
+    respawnBot(robot, room)
+
+  robot.brain.on 'loaded', =>
+    room = robot.brain.get 'reloadRoom'
+    if (room)
+      robot.messageRoom room, "Back online!"
+    robot.brain.set 'reloadRoom', 0
