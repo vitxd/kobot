@@ -22,9 +22,11 @@ sleep = (ms) ->
   start = new Date().getTime()
   continue while new Date().getTime() - start < ms
 
+isRestarting = false
+
 runCmd = (robot, room, cmd, args, next) ->
   child = spawn cmd, args
-  robot.messageRoom(room, "Running `" + cmd + "`")
+  robot.messageRoom(room, "Running `" + cmd + " " + args.join(" ") + "`")
   output = ""
   child.stdout.on('data', (data) ->
     output += data
@@ -55,8 +57,11 @@ getRevision = (robot, room, next) ->
 
 respawnBot = (robot, room) ->
   robot.messageRoom room, "Restarting in 3 seconds..."
-  robot.brain.set 'reloadRoom', room
-  delay 3000, -> robot.shutdown()
+  isRestarting = true
+  robot.brain.set "maintenanceReloadRoom", room
+  robot.brain.save()
+  robot.shutdown()
+#  delay 3000, -> console.log "Robot is " + robot
 
 module.exports = (robot) ->
   robot.respond /update git/i, (msg) ->
@@ -84,7 +89,7 @@ module.exports = (robot) ->
     respawnBot(robot, room)
 
   robot.brain.on 'loaded', =>
-    room = robot.brain.get 'reloadRoom'
-    if (room)
+    room = robot.brain.get "maintenanceReloadRoom"
+    if (!isRestarting && room != null && room.length)
       robot.messageRoom room, "Back online!"
-    robot.brain.set 'reloadRoom', 0
+      robot.brain.set "maintenanceReloadRoom", ""
