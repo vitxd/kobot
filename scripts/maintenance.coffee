@@ -61,7 +61,6 @@ respawnBot = (robot, room) ->
   robot.brain.set "maintenanceReloadRoom", room
   robot.brain.save()
   robot.shutdown()
-#  delay 3000, -> console.log "Robot is " + robot
 
 module.exports = (robot) ->
   robot.respond /update git/i, (msg) ->
@@ -91,5 +90,5 @@ module.exports = (robot) ->
   robot.brain.on 'loaded', =>
     room = robot.brain.get "maintenanceReloadRoom"
     if (!isRestarting && room != null && room.length)
-      robot.messageRoom room, "Back online!"
+      robot.messageRoom room, "Restart complete. I'm back online!"
       robot.brain.set "maintenanceReloadRoom", ""
