@@ -86,9 +86,9 @@ module.exports = (robot) ->
     return msg.send jobName + " now running"
 
   robot.respond /jenkins build (.+)/i, (msg) ->
-    job = msg.match[1]
+    jobName = msg.match[1]
     jenkinsApi 'post', msg, "job/" + jobName + "/build", (msg, response) ->
-    return msg.send jobName + " now running"
+      return msg.send jobName + " now running"
 
 #    robot.respond /unreleased commits/i (msg) ->
 #      return msg.send
