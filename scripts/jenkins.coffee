@@ -3,6 +3,10 @@
 #
 # Commands:
 #   hubot release the kraken - Triggers a production release
+#   hubot jenkins build [job name] - Triggers a job with name
+#   hubot jenkins whoami - Returns your linked Jenkins user
+#   hubot jenkins token set [Jenkins token] - Sets your API token
+#   hubot jenkins token show - Returns your API token
 #
 #
 # Author:
@@ -57,31 +61,34 @@ module.exports = (robot) ->
         return msg.send job.name + " is already running"
     next msg, view
 
+  getUser = (msg) ->
+    jenkinsApi('get', msg, "user/" + getUsername(msg), (msg, response) ->
+      msg.send "@" + msg.message.user.name + " you're linked to Jenkins user " + response.fullName
+    )
+
+  robot.respond /jenkins whoami/i, (msg) ->
+    getUser(msg)
 
   robot.respond /jenkins token set (.+)/i, (msg) ->
     pass = msg.match[1]
     setAuthToken(msg, pass)
-    jenkinsApi('get', msg, "user/" + getUsername(msg), (msg, response) ->
-      msg.send "@" + msg.message.user.name + " you're now linked to Jenkins user " + response.fullName
-    )
-
-  robot.respond /release the kraken/i, (msg) ->
-    jenkinsApi "get", msg, "view/" + jenkinsReleaseView, (msg, response) ->
-      checkViewIsNotExecuting msg, response, (msg, view) ->
-        jobName = view.jobs[0].name
-        jenkinsApi 'post', msg, "job/" + jobName + "/build", (msg, response) ->
-         return msg.send jobName + " now running"
-
-  robot.respond /jenkins start job (.+)/i, (msg) ->
-    job = msg.match[1]
-    jenkinsApi 'post', msg, "job/" + jobName + "/build", (msg, response) ->
-      return msg.send jobName + " now running"
-
+    getUser(msg)
 
   robot.respond /jenkins token show/i, (msg) ->
     token = getAuthToken(msg) || "Denied!"
     return msg.send "@" + msg.message.user.name + " " + token
 
+  robot.respond /release the kraken/i, (msg) ->
+    jenkinsApi "get", msg, "view/" + jenkinsReleaseView, (msg, response) ->
+    checkViewIsNotExecuting msg, response, (msg, view) ->
+    jobName = view.jobs[0].name
+    jenkinsApi 'post', msg, "job/" + jobName + "/build", (msg, response) ->
+    return msg.send jobName + " now running"
+
+  robot.respond /jenkins build (.+)/i, (msg) ->
+    job = msg.match[1]
+    jenkinsApi 'post', msg, "job/" + jobName + "/build", (msg, response) ->
+    return msg.send jobName + " now running"
 
 #    robot.respond /unreleased commits/i (msg) ->
 #      return msg.send
