@@ -9,10 +9,7 @@ Quidbot is a chat bot built on the [Hubot][hubot] framework. It was initially ge
 
 Install [NodeJS](http://nodejs.org/download/) (NPM is also installed).
 
-    % git clone https://hais@bitbucket.org/hais/quidbot.git quidbot
-    % cd quidbot
-    % npm install
-    % chmod +x bin/hubot
+    % git clone https://hais@bitbucket.org/hais/quidbot.git
 
 You can test your hubot by running the following.
 

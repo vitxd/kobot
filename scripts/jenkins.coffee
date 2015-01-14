@@ -74,16 +74,8 @@ module.exports = (robot) ->
 
   robot.respond /jenkins start job (.+)/i, (msg) ->
     job = msg.match[1]
-    username = getUsername(msg)
-    pass = getAuthToken(msg)
-    if (pass == null)
-      return msg.send "@" + msg.message.user.name + " DENIED!"
-    console.log "Looking for job " + job
-    JenkinsApi.init("https://" + username + ":" + pass + "@" + jenkinsDomain)
-    .last_build_report(job, (error, response, body) ->
-      console.log Util.inspect(response)
-      return msg.send "resp is " + response.fullDisplayName
-    )
+    jenkinsApi 'post', msg, "job/" + jobName + "/build", (msg, response) ->
+      return msg.send jobName + " now running"
 
 
   robot.respond /jenkins token show/i, (msg) ->
