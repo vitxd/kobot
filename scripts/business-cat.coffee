@@ -13,7 +13,7 @@
 # Author:
 #   Morgan Wigmanich <okize123@gmail.com> (https://github.com/okize)
 
-images = require './cats.json'
+images = require './../data/cats.json'
 
 module.exports = (robot) ->
   robot.respond /cat me/i, (msg) ->
