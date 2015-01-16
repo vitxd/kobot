@@ -12,8 +12,10 @@
 # Author:
 #   h.deakin@quidco.com
 
-jenkinsDomain = process.env.JENKINS_DOMAIN
-jenkinsReleaseView = process.env.JENKINS_RELEASE_VIEW
+
+
+jenkinsDomain = process.env.HUBOT_JENKINS_DOMAIN
+jenkinsReleaseView = process.env.HUBOT_JENKINS_RELEASE_VIEW
 
 API = '/api/json?pretty=true'
 
@@ -80,15 +82,19 @@ module.exports = (robot) ->
 
   robot.respond /release the kraken/i, (msg) ->
     jenkinsApi "get", msg, "view/" + jenkinsReleaseView, (msg, response) ->
-    checkViewIsNotExecuting msg, response, (msg, view) ->
-    jobName = view.jobs[0].name
-    jenkinsApi 'post', msg, "job/" + jobName + "/build", (msg, response) ->
-    return msg.send jobName + " now running"
+      checkViewIsNotExecuting msg, response, (msg, view) ->
+        jobName = view.jobs[0].name
+        jenkinsApi 'post', msg, "job/" + jobName + "/build", (msg, response) ->
+          return msg.send jobName + " now running"
 
   robot.respond /jenkins build (.+)/i, (msg) ->
     jobName = msg.match[1]
     jenkinsApi 'post', msg, "job/" + jobName + "/build", (msg, response) ->
       return msg.send jobName + " now running"
+
+
+
+#    msgHeading = "<" + job.full_url + "|" + job.fullDisplayName + ">";
 
 #    robot.respond /unreleased commits/i (msg) ->
 #      return msg.send
