@@ -2,7 +2,8 @@
   "urbandictionary",
   "debug",
   "reddit",
-  "jenkins",
+  "jenkins-responses",
+  "jenkins-triggers",
   "service-disruption",
   "maintenance",
   "business-cat"

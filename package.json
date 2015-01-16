@@ -5,6 +5,7 @@
   "author": "h.deakin@quidco.com",
   "description": "QuidBot",
   "dependencies": {
+    "async": "^0.9.0",
     "hubot": "~2.11.0",
     "hubot-bitbucket-pr": "~0.1.1",
     "hubot-calculator": "~0.4.0",
