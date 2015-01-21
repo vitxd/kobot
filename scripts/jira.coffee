@@ -26,8 +26,8 @@ module.exports = (robot) ->
   robot.hear regex, (msg) ->
 
     for ticketId in msg.message.text.match regex
-      async.seq(getTicket, build) ticketId, msg.room, (err, result) ->
-        console.log err
+      async.seq(getTicket, build) {ticketId: ticketId, room: msg.room}, (err, result) ->
+        console.log err if err
 
   getColour = (colour) ->
     switch colour
@@ -36,14 +36,16 @@ module.exports = (robot) ->
       when "blue-gray" then return "#4a6785"
       else return  "#ccc"
 
-  getTicket = (ticketKey, room, callback) ->
-    robot.http("#{JIRA_URL}rest/api/2/issue/#{ticketKey}")
+  getTicket = (data, callback) ->
+    robot.http("#{JIRA_URL}rest/api/2/issue/#{data.ticketId}")
     .header("Authorization", JIRA_AUTH)
     .get() (err, res, body) ->
       return callback err if err
-      callback null, room, JSON.parse body
+      data.ticketData = JSON.parse body
+      callback null, data
 
-  build = (room, ticket, callback) ->
+  build = (data, callback) ->
+    ticket = data.ticketData
     ticketKey = ticket.key
     projectKey = ticket.fields.project.key
     projectName = ticket.fields.project.name
@@ -58,5 +60,5 @@ module.exports = (robot) ->
     colour = ticket.fields.status.statusCategory.colorName
     console.log colour
     attachments = [slack.buildAttachment(msg, getColour(colour), fields)]
-    slack.post("#{room}", "", attachments, callback)
+    slack.post("##{data.room}", "", attachments, callback)
 
