@@ -26,7 +26,7 @@ module.exports = (robot) ->
   robot.hear regex, (msg) ->
 
     for ticketId in msg.message.text.match regex
-      async.seq(getTicket, build) {ticketId: ticketId, room: msg.room}, (err, result) ->
+      async.seq(getTicket, build) {ticketId: ticketId, room: msg.message.room}, (err, result) ->
         console.log err if err
 
   getColour = (colour) ->
@@ -58,7 +58,7 @@ module.exports = (robot) ->
     fields.push slack.buildGroup("Status", ticket.fields.status.name, true)
 #    description = ticket.fields.description
     colour = ticket.fields.status.statusCategory.colorName
-    console.log colour
+#    console.log colour
     attachments = [slack.buildAttachment(msg, getColour(colour), fields)]
     slack.post("##{data.room}", "", attachments, callback)
 
