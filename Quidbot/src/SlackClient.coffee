@@ -32,6 +32,6 @@ class SlackClient
     return {'text': "#{title}", 'color': colour, 'fields': fields}
 
   buildGroup: (title, value, short) ->
-    return {'title': "#{title}", 'value': "#{value}", 'short': short?}
+    return {'title': "#{title}", 'value': "#{value}", 'short': short}
 
 module.exports = SlackClient
