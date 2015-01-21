@@ -1,0 +1,10 @@
+{
+  "name": "quidbot",
+  "version": "0.0.2",
+  "main": "./index",
+  "description": "My Description",
+  "repository": {
+    "type": "git",
+    "url": "https://hais@bitbucket.org/hais/quidbot.git"
+  }
+}
