@@ -6,5 +6,7 @@
   "jenkins-triggers",
   "service-disruption",
   "maintenance",
-  "business-cat"
+  "business-cat",
+  "jira",
+  "repost"
 ]
