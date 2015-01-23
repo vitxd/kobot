@@ -13,6 +13,19 @@
 # Authors:
 #   Hais
 
+
+pad = (n) ->
+  return if n < 10 then '0' + n.toString(10) else n.toString(10)
+
+buildTimestamp = (date) ->
+  hs = date.getHours()
+  mi = pad date.getMinutes()
+  sc = pad date.getSeconds()
+  dy = pad date.getDate()
+  mo = pad date.getMonth() + 1
+  yr = date.getFullYear()
+  "#{hs}:#{mi}:#{sc} #{dy}/#{mo}/#{yr}"
+
 module.exports = (robot) ->
 
   lastUrl = {}
@@ -20,10 +33,11 @@ module.exports = (robot) ->
   robot.respond /posted when\?/i, (msg) ->
     data = robot.brain.get "repostdata" || {}
     return if !lastUrl and !lastUrl[msg.message.room]
-    if data[lastUrl[msg.message.room]]?
-      report = data[lastUrl[msg.message.room]]
-      date = new Date(report.date)
-      msg.send "First posted #{date.getHours()}:#{date.getMinutes()} #{date.getDay()}/#{date.getMonth()}/#{date.getFullYear()} by #{report.username}"
+    return if !data[lastUrl[msg.message.room]]?
+    report = data[lastUrl[msg.message.room]]
+    date = new Date(report.date)
+    timestamp = buildTimestamp date
+    msg.send "First posted #{timestamp} by #{report.username}"
 
   robot.hear /(https?:\/\/\S*)/i, (msg) ->
     url = msg.match[0].toLowerCase()
