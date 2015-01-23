@@ -11,8 +11,11 @@
 async = require 'async'
 quidbot = require 'quidbot'
 
+pattern = process.env.HUBOT_JIRA_TICKET_PATTERN || ""
 
-regex = new RegExp  process.env.HUBOT_JIRA_TICKET_PATTERN, 'gi'
+return if !pattern.length
+
+regex = new RegExp  pattern, 'gi'
 JIRA_URL = process.env.HUBOT_JIRA_URL
 JIRA_AUTH = process.env.HUBOT_JIRA_AUTH
 
@@ -24,7 +27,6 @@ slack = new quidbot.SlackClient("Jira", SLACK_LOGO)
 module.exports = (robot) ->
 
   robot.hear regex, (msg) ->
-
     for ticketId in msg.message.text.match regex
       async.seq(getTicket, build) {ticketId: ticketId, room: msg.message.room}, (err, result) ->
         console.log err if err
@@ -58,7 +60,6 @@ module.exports = (robot) ->
     fields.push slack.buildGroup("Status", ticket.fields.status.name, true)
 #    description = ticket.fields.description
     colour = ticket.fields.status.statusCategory.colorName
-#    console.log colour
     attachments = [slack.buildAttachment(msg, getColour(colour), fields)]
     slack.post("##{data.room}", "", attachments, callback)
 
