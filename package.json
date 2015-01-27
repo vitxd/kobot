@@ -46,6 +46,8 @@
     "hubot-youtube": "~0.1.2",
     "install": "~0.1.8",
     "jenkins-api": "^0.2.5",
+    "mongodb": "^1.4.29",
+    "mongoose": "^3.8.22",
     "npm": "~2.1.18",
     "underscore": "^1.7.0"
   },
