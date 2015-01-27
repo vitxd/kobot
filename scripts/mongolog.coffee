@@ -61,7 +61,7 @@ module.exports = (robot) ->
     logEvent msg, EVENT_LEAVE
 
   robot.topic (msg) ->
-    logEvent msg, EVENT_TIPIC
+    logEvent msg, EVENT_TOPIC
 
   robot.respond /debug mongolog/i, (msg) ->
     Model.find({'room': msg.message.room}).limit(5).sort('-_id').exec((err, doc) ->
