@@ -64,7 +64,6 @@ module.exports = (robot) ->
     logEvent msg, EVENT_TIPIC
 
   robot.respond /debug mongolog/i, (msg) ->
-    msg.send "hello"
     Model.find({'room': msg.message.room}).limit(5).sort('-_id').exec((err, doc) ->
-      msg.send "```" + Util.inspect doc + "```"
+      msg.send "```" + Util.inspect(doc) + "```"
     )
