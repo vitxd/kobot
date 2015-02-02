@@ -5,6 +5,7 @@
 #   hubot update and restart - Fetch, install & reload
 #   hubot update git - Perform git pull
 #   hubot show version - Show git revision
+#   hubot check for updates - Inspects NPM for package updates
 #
 #
 # Author:
@@ -13,6 +14,7 @@
 spawn = require('child_process').spawn
 
 gitPath = process.env.HUBOT_GIT_PATH
+checkUpdatesPath = process.env.HUBOT_CHECK_UPDATES_PATH
 
 delay = (ms, func) -> setTimeout func, ms
 
@@ -23,6 +25,7 @@ sleep = (ms) ->
 isRestarting = false
 
 runCmd = (robot, room, cmd, args, next) ->
+  args ?= []
   child = spawn cmd, args
   robot.messageRoom(room, "Running `" + cmd + " " + args.join(" ") + "`")
   output = ""
@@ -50,6 +53,9 @@ updateGit = (robot, room, next) ->
 getRevision = (robot, room, next) ->
   return runCmd(robot, room, gitPath, ["log", "--oneline", "-n", "1"])
 
+getCheckUpdates = (robot, room, next) ->
+  return runCmd(robot, room, checkUpdatesPath)
+
 respawnBot = (robot, room) ->
   robot.messageRoom room, "Restarting in 3 seconds..."
   isRestarting = true
@@ -75,6 +81,10 @@ module.exports = (robot) ->
   robot.respond /show version/i, (msg) ->
     room = msg.message.user.room
     getRevision(robot, room)
+
+  robot.respond /check for updates/i, (msg) ->
+    room = msg.message.user.room
+    getCheckUpdates(robot, room)
 
   robot.respond /respawn/i, (msg) ->
     room = msg.message.user.room
