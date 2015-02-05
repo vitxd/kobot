@@ -45,7 +45,7 @@ module.exports = (robot) ->
     query "askreddit", null, (item) ->
       msg.send item.data.title
 
-  robot.respond /ask(?: the)?(?: channel)?(?: a)? [nsfw|rude] question/i, (msg) ->
+  robot.respond /ask(?: the)?(?: channel)?(?: a)? (nsfw|rude) question/i, (msg) ->
     query "askredditnsfw", null, (item) ->
       msg.send item.data.title
 
