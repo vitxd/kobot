@@ -73,7 +73,7 @@ module.exports = (robot) ->
     query "DoesAnybodyElse", null, (item) ->
       msg.send item.data.title.replace(/dae/i, "Does anyone else")
 
-  robot.respond /make me hungry/i, (msg) ->
+  robot.respond /what should i eat/i, (msg) ->
     query "foodporn", null, (item) ->
       msg.send item.data.url
 
