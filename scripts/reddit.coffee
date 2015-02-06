@@ -3,16 +3,18 @@
 #
 # Commands:
 #   hubot /r/<subreddit> - Picks a random post from subreddit
-#   hubot ask question
-#   hubot ask rude question
+#   hubot ask a question
+#   hubot ask a rude question
 #   hubot what are you thinking
 #   hubot idea - Inspire me
 #   hubot fact - Teach me
-#   hubot be funny - Supply a humorous image
+#   hubot be funny
 #   hubot fuck up
 #   hubot sanity check
 #   hubot tell me a joke
 #   hubot what should i know
+#   hubot what should i buy
+#   hubot call it
 #
 #
 # Author:
@@ -53,13 +55,17 @@ module.exports = (robot) ->
     query "showerthoughts", null, (item) ->
       msg.send item.data.title
 
-  robot.respond /idea/i, (msg) ->
+  robot.respond /(?:give )?(?:me )?(?:an )?idea/i, (msg) ->
     query "shittyideas", null, (item) ->
       msg.send "Here's a great idea: " + item.data.title
 
-  robot.respond /(?:tell )?(?:me )?something i (did not|didn\\'t) know/i, (msg) ->
+  robot.respond /(?:tell )?(?:me )?something i (did not|didn\'t) know/i, (msg) ->
     query "todayilearned", null, (item) ->
       msg.send item.data.title.replace(/til (?:that )?/i, "") + "\n" + item.data.url
+
+  robot.respond /(call|predict)(?: the)?(?: future)?/i, (msg) ->
+    query "markmywords", null, (item) ->
+      msg.send item.data.title.replace(/mmw(?:\:)?/i, "")
 
   robot.respond /(?:be )?funny/i, (msg) ->
     query "funny", null, (item) ->
