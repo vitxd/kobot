@@ -6,15 +6,15 @@
 #   hubot ask a question
 #   hubot ask a rude question
 #   hubot what are you thinking
-#   hubot idea - Inspire me
-#   hubot fact - Teach me
+#   hubot give me an idea
+#   hubot tell me something i did not know
 #   hubot be funny
 #   hubot fuck up
 #   hubot sanity check
 #   hubot tell me a joke
 #   hubot what should i know
 #   hubot what should i buy
-#   hubot call it
+#   hubot predict the future
 #
 #
 # Author:
