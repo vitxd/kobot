@@ -41,7 +41,7 @@ module.exports = (robot) ->
 
   robot.respond /[\/]?r\/(.+)/i, (msg) ->
     query msg.match[1], null, (item) ->
-      msg.send child.data.title + "\n" + child.data.url
+      msg.send item.data.title + "\n" + item.data.url
 
   robot.respond /ask(?: the)?(?: channel)?(?: a)? question/i, (msg) ->
     query "askreddit", null, (item) ->
