@@ -13,6 +13,8 @@
 # Authors:
 #   Hais
 
+#Disabling for now
+return
 
 pad = (n) ->
   return if n < 10 then '0' + n.toString(10) else n.toString(10)
