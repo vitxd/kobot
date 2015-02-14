@@ -27,6 +27,5 @@
   "hubot-newrelic2",
   "hubot-suggest",
   "hubot-cron",
-  "hubot-fliptable",
-  "hubot-outofcontext"
+  "hubot-fliptable"
 ]

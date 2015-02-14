@@ -28,7 +28,6 @@
     "hubot-mute": "0.0.5",
     "hubot-nationalrail": "0.0.2",
     "hubot-newrelic2": "^0.2.3",
-    "hubot-outofcontext": "^1.0.1",
     "hubot-plusplus": "~1.1.2",
     "hubot-pugme": "~0.1.0",
     "hubot-redis-brain": "0.0.2",

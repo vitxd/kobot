@@ -27,7 +27,7 @@ isRestarting = false
 runCmd = (robot, room, cmd, args, next) ->
   args ?= []
   child = spawn cmd, args
-  robot.messageRoom(room, "Running `" + cmd + " " + args.join(" ") + "`")
+  #robot.messageRoom(room, "Running `" + cmd + " " + args.join(" ") + "`")
   output = ""
   child.stdout.on('data', (data) ->
     output += data
@@ -39,12 +39,12 @@ runCmd = (robot, room, cmd, args, next) ->
     if (output.length)
       robot.messageRoom(room, "```" + output + "```")
     if (code != 0)
-      robot.messageRoom(room, "Fail (" + code + ")")
+      robot.messageRoom(room, "`" + cmd + " " + args.join(" ") + "` Failed (" + code + ")")
     else
       if next
         next(robot, room, next)
-      else
-        robot.messageRoom(room, "Success")
+#      else
+#        robot.messageRoom(room, "Success")
   )
 
 updateGit = (robot, room, next) ->
