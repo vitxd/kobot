@@ -94,5 +94,5 @@ module.exports = (robot) ->
     room = robot.brain.get "maintenanceReloadRoom"
     if (!isRestarting && room != null && room.length)
       robot.messageRoom room, "Restart complete. I'm back online!"
+      getRevision robot, room
       robot.brain.set "maintenanceReloadRoom", ""
-      getRevision robot room
