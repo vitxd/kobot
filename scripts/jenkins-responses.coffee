@@ -1,5 +1,5 @@
 # Description:
-#   Urban dictionary
+#   Jenkins Responses
 #
 # Commands:
 #   hubot release the kraken - Triggers a production release
