@@ -54,6 +54,6 @@ module.exports = (robot) ->
     if (quotes = robot.brain.data.oocQuotes[msg.message.user.name])
       randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
 
-      if Math.floor(Math.random() * 200) == 88
+      if Math.floor(Math.random() * 88) == 42
         msg.send "\"#{randomQuote}\" - #{msg.message.user.name}"
 
