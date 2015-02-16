@@ -70,7 +70,7 @@ module.exports = (robot) ->
     data   = req.body
     res.send 'OK'
 
-    robot.http('http://localhost:8080/receive/?event=jenkins.build.live')
+    robot.http('http://localhost/receive/?event=jenkins.build.live', {port: 8080})
     .header('Content-type', 'application/json')
     .post(req.body.payload) (err, resp, body) ->
       echo err if err
