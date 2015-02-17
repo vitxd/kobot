@@ -14,7 +14,6 @@ Util = require "util"
 qs = require("querystring")
 
 
-
 matches = {
   "x-foo-bar-tests": [
     {
@@ -66,14 +65,11 @@ module.exports = (robot) ->
 
 #  robot.router.post '/hubot/jenkins', (req, res) ->
   robot.router.post '/receive', (req, res) ->
-
-    data   = req.body
     res.send 'OK'
-
-    robot.http('http://localhost/receive/?event=jenkins.build.live')
+    robot.http('http://localhost' + req.originalUrl)
     .port(8080)
     .header('Content-type', 'application/json')
-    .post(req.body.payload) (err, resp, body) ->
+    .post(JSON.stringify req.body) (err, resp, body) ->
       echo err if err
     return
 
