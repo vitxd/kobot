@@ -31,3 +31,5 @@ node_modules
 # Ignore Project files
 .idea
 *.iml
+
+kobot.sh

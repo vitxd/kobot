@@ -7,10 +7,11 @@
   "service-disruption",
   "maintenance",
   "business-cat",
-  "jira",
   "codinglove",
   "humanity",
   "mongolog",
   "outofcontext",
-  "slack-attachment"
+  "slack-attachment",
+  "phpdoc",
+  "pivotal"
 ]
