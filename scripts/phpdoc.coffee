@@ -16,10 +16,10 @@
 
 module.exports = (robot) ->
   robot.respond /phpdoc for (.+)$/i, (msg) ->
-    url = "http://www.php.net/manual/en/function." + msg.match[1].replace(/[_-]+/, "-") + ".php";
+    url = "http://php.net/manual/en/function." + msg.match[1].replace(/[_-]+/, "-") + ".php";
     msg.send url
     msg
-      .http("http://www.php.net/manual/en/function." + msg.match[1].replace(/[_-]+/, "-") + ".php")
+      .http(url)
       .get() (err, res, body) ->
 
         $ = require("cheerio").load(body)
