@@ -16,7 +16,7 @@
 
 module.exports = (robot) ->
   robot.respond /phpdoc for (.+)$/i, (msg) ->
-    var url = "http://www.php.net/manual/en/function." + msg.match[1].replace(/[_-]+/, "-") + ".php";
+    url = "http://www.php.net/manual/en/function." + msg.match[1].replace(/[_-]+/, "-") + ".php";
     msg.send url
     msg
       .http("http://www.php.net/manual/en/function." + msg.match[1].replace(/[_-]+/, "-") + ".php")
