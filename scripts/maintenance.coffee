@@ -57,7 +57,9 @@ getCheckUpdates = (robot, room, next) ->
   return runCmd(robot, room, checkUpdatesPath)
 
 respawnBot = (robot, room) ->
-  robot.messageRoom room, "Restarting in 3 seconds..."
+  now = new Date()
+  secs = 60 - now.getSeconds()
+  robot.messageRoom room, "Restarting in #{secs} seconds..."
   isRestarting = true
   robot.brain.set "maintenanceReloadRoom", room
   robot.brain.save()

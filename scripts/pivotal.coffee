@@ -65,7 +65,7 @@ module.exports = (robot) ->
           if res.statusCode != 500
             (new Parser).parseString body, (err, data)->
               story = data.story
-              if !story.id
+              if !story || !story.id
                 return
               message = "##{story.id[0]._} #{story.name}"
               message += " (#{story.owned_by})" if story.owned_by
