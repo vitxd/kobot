@@ -8,6 +8,7 @@ module.exports = (robot) ->
         res = $('#help .help-box').text()
         console.log(res)
         if res
+          msg.send url
           msg.send res
         else
           msg.send "Not found"
