@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   hubot something - somec ommand
+#   hubot something - some command
 #
 # Author:
 #   Hais Deakin <h.deakin@quidco.com>
