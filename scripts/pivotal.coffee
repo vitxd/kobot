@@ -52,6 +52,8 @@ module.exports = (robot) ->
     project_id = process.env.HUBOT_PIVOTAL_PROJECT
     story_id = msg.match[2]
 
+    if !token || !project_id || !story_id
+      return
     msg.http("http://www.pivotaltracker.com/services/v3/projects").headers("X-TrackerToken": token).get() (err, res, body) ->
       if err
         msg.send "Pivotal says: #{err}"
