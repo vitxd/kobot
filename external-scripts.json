@@ -13,7 +13,6 @@
   "hubot-seen",
   "hubot-mute",
   "hubot-plusplus",
-  "hubot-explainshell",
   "hubot-thank-you",
   "hubot-bitbucket-pr",
   "hubot-victory",
@@ -24,7 +23,6 @@
   "hubot-http-status",
   "hubot-tweets",
   "hubot-dogeme",
-  "hubot-newrelic2",
   "hubot-suggest",
   "hubot-cron",
   "hubot-fliptable"
