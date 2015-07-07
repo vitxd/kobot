@@ -13,17 +13,19 @@
   "hubot-seen",
   "hubot-mute",
   "hubot-plusplus",
+  "hubot-explainshell",
   "hubot-thank-you",
   "hubot-bitbucket-pr",
   "hubot-victory",
   "hubot-thesimpsons",
   "hubot-nationalrail",
   "hubot-calculator",
-  "hubot-devops-reactions",
   "hubot-http-status",
   "hubot-tweets",
   "hubot-dogeme",
+  "hubot-newrelic2",
   "hubot-suggest",
   "hubot-cron",
-  "hubot-fliptable"
+  "hubot-fliptable",
+  "hubot-heroku-keepalive"
 ]
